@@ -1,0 +1,79 @@
+{% extends 'laboratorio/base.html' %}
+{% load staticfiles %}
+    <title>Creación de experimento</title>
+
+{% block header_text %}
+    <link href="{% static 'css/alertify.css' %}" rel="stylesheet">
+    <link href="{% static 'css/alertify.rtl.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/alertify.js'%} "></script>
+    <script src="{% static 'js/moment.js'%} "></script>
+    <script src="{% static 'js/Laboratory/ExperimentController.js '%} "></script>
+    <script type="application/javascript">
+        $("body").ready(function (){
+             $.getJSON("{%url 'laboratorio:listaEstadosExperimento'%}").done(showExperimentStates);
+             $.getJSON("{%url 'laboratorio:listaNombreProyectos'%}").done(showProyectsNames);
+             $.getJSON("{%url 'laboratorio:responsables'%}").done(showResponsables);
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <h1 class="text-center" style="color:#fed136">Crear Experimento</h1>
+            <form class="form-horizontal" method="POST" data-add-experiment-url="{%url 'laboratorio:experimentos'%}" id="formAddExperiment">
+            {%csrf_token%}
+                <div class="form-group">
+                    <label for="nombre" class="col-sm-2 control-label">Titulo: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" value="" required autofocus placeholder="Nombre del experimento">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fechaInicio" class="col-sm-2 control-label">Fecha de inicio: </label>
+                    <div class="col-sm-6">
+                        <input type="date" name="fechaInicio" id="fechaInicio" value="" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="proyecto" class="col-sm-2 control-label">Proyecto: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="proyecto" id="proyecto">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="responsable" class="col-sm-2 control-label">Responsable: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="responsable" id="responsable">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Estado" class="col-sm-2 control-label">Estado: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="estado" id="estado">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="prioridad" class="col-sm-2 control-label">Prioridad: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="number" min="1" max="100"  maxlength="3" name="prioridad" id="prioridad" value=""/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion" class="col-sm-2 control-label">Descripción: </label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" name="descripcion" maxlength="1000" cols="100" rows="5" id="descripcion"> </textarea>
+                    </div>
+                </div>
+                <div class="col-sm-offset-4 col-sm-10">
+                    <input class="btn btn-warning" type="button" onclick="validateData(true);"  value="Guardar"/>
+                    <a href="{% url 'laboratorio:listarExperimentos' %}" class="btn btn-warning">Regresar</a>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock %}

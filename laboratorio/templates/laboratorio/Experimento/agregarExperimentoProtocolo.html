@@ -1,0 +1,73 @@
+{% extends 'laboratorio/base.html' %}
+{% load staticfiles %}
+{% block header_text %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/Laboratory/ExpeProtoController.js' %}"></script>
+    <script>
+$(document).ready(listarProtocolosExperimento({{ experimento.id}}));
+</script>
+    <script type="application/javascript">
+        $("body").ready(function (){
+             $.getJSON("{%url 'laboratorio:protocolos'%}").done(showProtocolos);
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <section id="portfolio" >
+        <div class="container">
+            <h1 class="text-center" style="color:#fed136">Protocolos  {{ experimento.nombre }}</h1>
+
+            <div class="row">
+            <div class="datagrid ">
+                <div class="form-group">
+                    <div class="col-sm-6">
+                    <table>
+                    <tr>
+                    <td>
+                        <div class="col-sm-10">
+                        <select class="form-control" name="protocolo" id="protocolo">
+                        </select>
+                    </div>
+                    </td>
+                    <td>
+                    <button type="button" class="btn btn-primary" onclick="agregarExperimentoProtocolo({{ experimento.id}})">Agregar</button>
+                    </td>
+                    </tr>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="datagrid ">
+                    <table id="myTable" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Versión</th>
+                                <th>Categoria</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6">
+                                    <div id="paging">
+                                        <ul>
+                                            <li><a href="#"><span>Previous</span></a></li>
+                                            <li><a href="#" class="active"><span>1</span></a></li>
+                                            <li><a href="#"><span>Next</span></a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+<!----!-->
+                        </tbody>
+                    </table>
+                </div>
+             </div>
+         </div>
+    </section>
+{% endblock %}

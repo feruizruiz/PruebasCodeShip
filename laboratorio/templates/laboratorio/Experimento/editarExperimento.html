@@ -1,0 +1,114 @@
+{% extends 'laboratorio/base.html' %}
+{% load staticfiles %}
+    <title>Edición de experimento</title>
+{% block header_text %}
+    <link href="{% static 'css/alertify.css' %}" rel="stylesheet">
+    <link href="{% static 'css/alertify.rtl.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/alertify.js'%} "></script>
+    <script src="{% static 'js/moment.js'%} "></script>
+    <script src="{% static 'js/Laboratory/ExperimentController.js'%} "></script>
+
+    <script type="application/javascript">
+       $("body").ready( function (){
+           var startDate  ="{{ experimento.fechaInicio|date:"SHORT_DATE_FORMAT" }}";
+           setDate(startDate, "fechaInicio");
+           $.getJSON("{%url 'laboratorio:listaNombreProyectos'%}").done(listProyectsName);
+           $.getJSON("{%url 'laboratorio:responsables'%}").done(listResponsables);
+           $.getJSON("{%url 'laboratorio:listaResultadosExperimento'%}").done(listResultados);
+           $.getJSON("{%url 'laboratorio:listaEstadosExperimento'%}").done(listStates);
+
+        });
+
+       function listProyectsName(response){
+               var proyectsName  = {{ experimento.proyecto.pk }};
+                showProyectsNames(response);
+                $("#proyecto option[value=" + proyectsName +"]").attr("selected","selected");
+       }
+       function listResponsables(response){
+               var responsable  = {{ experimento.responsable.pk }};
+                showResponsables(response);
+                $("#responsable option[value=" + responsable +"]").attr("selected","selected");
+       }
+       function listResultados(response){
+               var resultados  = "{{ experimento.resultado }}";
+                showResultados(response);
+                if(resultados == "None")
+                    resultados=-1;
+                $("#resultado option[value=" + resultados +"]").attr("selected","selected");
+       }
+       function listStates(response){
+               var state  = {{ experimento.estado }};
+                showExperimentStates(response);
+                $("#estado option[value=" + state +"]").attr("selected","selected");
+       }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <h1 class="text-center" style="color:#fed136">Editar Experimento</h1>   <a href="{%url 'laboratorio:agregarExperimentoProtocolo' id=experimento.pk%}" title="Agregar Protocolo" class="btn btn-success btn-round img-crear"> <span title="Agregar Protocolo" class="glyphicon glyphicon-plus"></span></a>
+            <form class="form-horizontal" method="POST" data-edit-experiment-url="{%url 'laboratorio:experimentoId' id=experimento.pk %}" id="formEditExperiment">
+            {%csrf_token%}
+                <div class="form-group">
+                    <label for="nombre" class="col-sm-2 control-label">Titulo: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" name="nombre" id="nombre" maxlength="100" value="{{ experimento.nombre }}" required autofocus placeholder="Nombre del experimento">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fechaInicio" class="col-sm-2 control-label">Fecha de inicio: </label>
+                    <div class="col-sm-6">
+                        <input type="date" name="fechaInicio" id="fechaInicio" value="{{ experimento.fechaInicio }}" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="proyecto" class="col-sm-2 control-label">Proyecto: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="proyecto" id="proyecto">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="responsable" class="col-sm-2 control-label">Responsable: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="responsable" id="responsable">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Estado" class="col-sm-2 control-label">Estado: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="estado" id="estado">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="prioridad" class="col-sm-2 control-label">Prioridad: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="number" min="1" max="100"  maxlength="3" name="prioridad" id="prioridad" value="{{ experimento.prioridad }}"/>
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label for="resultado" class="col-sm-2 control-label">Resultado: </label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="resultado" id="resultado">
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion" class="col-sm-2 control-label">Descripción: </label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" name="descripcion" maxlength="1000" cols="100" rows="5" id="descripcion">{{ experimento.descripcion }} </textarea>
+                    </div>
+                </div>
+                <div class="col-sm-offset-4 col-sm-10">
+                    <input class="btn btn-warning" type="button" onclick=validateData(false);  value="Guardar"/>
+                    <a href="{% url 'laboratorio:listarExperimentos' %}" class="btn btn-warning">Regresar</a>
+                </div>
+
+            </form>
+        </div>
+    </section>
+{% endblock %}

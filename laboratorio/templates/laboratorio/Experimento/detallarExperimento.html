@@ -1,0 +1,121 @@
+{% extends 'laboratorio/base.html' %}
+{% load staticfiles %}
+    <title>Detalle de experimento</title>
+{% block header_text %}
+    <link href="{% static 'css/alertify.css' %}" rel="stylesheet">
+    <link href="{% static 'css/alertify.rtl.css' %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="{% static 'js/alertify.js'%} "></script>
+    <script src="{% static 'js/moment.js'%} "></script>
+    <script src="{% static 'js/Laboratory/ExperimentController.js'%} "></script>
+
+    <script type="application/javascript">
+       $("body").ready( function (){
+           var startDate  ="{{ experimento.fechaInicio|date:"SHORT_DATE_FORMAT" }}";
+           setDate(startDate, "fechaInicio");
+           $.getJSON("{%url 'laboratorio:listaNombreProyectos'%}").done(showProject);
+           $.getJSON("{%url 'laboratorio:responsables'%}").done(showResponsable);
+           $.getJSON("{%url 'laboratorio:listaResultadosExperimento'%}").done(showResult);
+           $.getJSON("{%url 'laboratorio:listaEstadosProyecto'%}").done(listStates);
+
+        });
+
+       function showProject(response){
+           var projectId  = {{ experimento.proyecto.pk }};
+           var project;
+           for (var i=0; i <response.length; i++){
+               project = response[i];
+               if(project.pk == projectId)
+                   $("#proyecto").val(project.fields.nombre);
+           }
+       }
+
+       function showResponsable(response){
+           var responsableId  = {{ experimento.responsable.pk }};
+           var responsable;
+           for (var i=0; i <response.length; i++){
+               responsable = response[i];
+               if(responsable.pk == responsableId)
+                $("#responsable").val(responsable.fields.nombre);
+           }
+       }
+       function showResult(response){
+          var resultId  = {{ experimento.resultado }};
+          var result;
+          for (var i=0; i <response.length; i++){
+              result = response[i];
+              if(result.id == resultId)
+                $("#resultado").val(result.resultado);
+          }
+       }
+
+       function listStates(response){
+          var stateId  = {{ experimento.estado }};
+          var state;
+          for (var i=0; i <response.length; i++){
+              state = response[i];
+              if(state.id == stateId)
+                  $("#estado").val(state.estado);
+          }
+       }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="container form-horizontal">
+            <h1 class="text-center" style="color:#fed136">Detalle de Experimento</h1>
+                <div class="form-group">
+                    <label for="nombre" class="col-sm-2 control-label">Titulo: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" name="nombre" id="nombre" value="{{ experimento.nombre }}" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fechaInicio" class="col-sm-2 control-label">Fecha de inicio: </label>
+                    <div class="col-sm-6">
+                        <input type="date" name="fechaInicio" id="fechaInicio" value="{{ experimento.fechaInicio }}" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="proyecto" class="col-sm-2 control-label">Proyecto: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" name="proyecto" id="proyecto" value="" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="responsable" class="col-sm-2 control-label">Responsable: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" name="responsable" id="responsable" value="" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="estado" class="col-sm-2 control-label">Estado: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" name="estado" id="estado" value="" disabled/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="prioridad" class="col-sm-2 control-label">Prioridad: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="number" disabled name="prioridad" id="prioridad" value="{{ experimento.prioridad }}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="resultado" class="col-sm-2 control-label">Resultado: </label>
+                    <div class="col-sm-6">
+                        <input class="form-control" type="text" disabled name="resultado" id="resultado" value=""/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion" class="col-sm-2 control-label">Descripción: </label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" name="descripcion" disabled id="descripcion">{{ experimento.descripcion }} </textarea>
+                    </div>
+                </div>
+                <div class="col-sm-offset-4 col-sm-10">
+                    <a href="{% url 'laboratorio:listarExperimentos' %}" class="btn btn-warning">Regresar</a>
+                </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,7 @@
+.idea/
+*.pyc
+/images/*.jpg
+polls/*.pyc
+polls/migrations/*
+**/polls/*.pyc
+
