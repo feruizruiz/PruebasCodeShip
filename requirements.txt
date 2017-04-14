@@ -1,5 +1,4 @@
 boto==2.39.0
-curl==2017.0.1
 dj-database-url==0.4.1
 Django==1.9.7
 django-bootstrap3==8.1.0
