@@ -1,11 +1,11 @@
-1492219469706	geckodriver	INFO	Listening on 127.0.0.1:62103
-1492219471756	mozprofile::profile	INFO	Using profile path C:\Users\Lenovo\AppData\Local\Temp\rust_mozprofile.LnS5DcB4hSrx
-1492219471766	geckodriver::marionette	INFO	Starting browser C:\Program Files (x86)\Mozilla Firefox\firefox.exe with args []
-1492219471779	geckodriver::marionette	INFO	Connecting to Marionette on localhost:62109
+1492264693146	geckodriver	INFO	Listening on 127.0.0.1:54814
+1492264695509	mozprofile::profile	INFO	Using profile path C:\Users\Lenovo\AppData\Local\Temp\rust_mozprofile.68fFTc99Aubq
+1492264695545	geckodriver::marionette	INFO	Starting browser C:\Program Files (x86)\Mozilla Firefox\firefox.exe with args []
+1492264695616	geckodriver::marionette	INFO	Connecting to Marionette on localhost:54820
 [GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
-1492219474369	Marionette	INFO	Listening on port 62109
-1492219475915	Marionette	WARN	TLS certificate errors will be ignored for this session
+1492264701968	Marionette	INFO	Listening on port 54820
+1492264705824	Marionette	WARN	TLS certificate errors will be ignored for this session
 [GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
-1492219479900	Marionette	INFO	New connections will no longer be accepted
-[Child 6096] ###!!! ABORT: Aborting on channel error.: file c:/builds/moz2_slave/m-rel-w32-00000000000000000000/build/src/ipc/glue/MessageChannel.cpp, line 2143
+1492264719137	Marionette	INFO	New connections will no longer be accepted
+[Child 7684] ###!!! ABORT: Aborting on channel error.: file c:/builds/moz2_slave/m-rel-w32-00000000000000000000/build/src/ipc/glue/MessageChannel.cpp, line 2143
 
